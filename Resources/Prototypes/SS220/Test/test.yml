@@ -1,0 +1,16 @@
+# © SS220, An EULA/CLA with a hosting restriction, full text: https://raw.githubusercontent.com/SerbiaStrong-220/space-station-14/master/CLA.txt
+
+- type: entity
+  id: HelloWorldEntity
+  parent: BaseItem
+  name: New Hello World Entity 
+  description: Yes...
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/Plushies/lizard.rsi
+    state: icon
+  - type: Item
+    size: Small
+  - type: Test
+  - type: Speech
+    enabled: true
