@@ -1,11 +1,12 @@
 // © SS220, An EULA/CLA with a hosting restriction, full text: https://raw.githubusercontent.com/SerbiaStrong-220/space-station-14/master/CLA.txt
 
+using Content.Shared.SS220.MindExtension;
 using Content.Shared.SS220.MindExtension.Events;
 using Robust.Client.Player;
 
 namespace Content.Client.SS220.MindExtension;
 
-public sealed class MindExtensionSystem : EntitySystem
+public sealed class MindExtensionSystem : SharedMindExtensionSystem
 {
     [Dependency] private readonly IPlayerManager _playerManager = default!;
 
@@ -14,8 +15,9 @@ public sealed class MindExtensionSystem : EntitySystem
     public event Action<ExtensionReturnResponse>? ExtensionReturnResponse;
     public event Action<RespawnedResponse>? RespawnedResponse;
 
-    public TimeSpan? RespawnTime { get; private set; }
+    public TimeSpan? RespawnTime => GetRespawnTime();
 
+    private Entity<MindExtensionComponent>? _mindExtensionEntity;
     public override void Initialize()
     {
         base.Initialize();
@@ -39,7 +41,7 @@ public sealed class MindExtensionSystem : EntitySystem
 
     private void OnRespawnTimeResponse(RespawnTimeResponse ev)
     {
-        RespawnTime = ev.Time;
+        //RespawnTime = ev.Time;
     }
 
     private void OnGhostBodyListResponse(GhostBodyListResponse ev)
@@ -81,5 +83,19 @@ public sealed class MindExtensionSystem : EntitySystem
     public void MoveToBody(NetEntity id)
     {
         RaiseNetworkEvent(new ExtensionReturnRequest(id));
+    }
+
+    private TimeSpan? GetRespawnTime()
+    {
+        if (_mindExtensionEntity is not null)
+            return _mindExtensionEntity.Value.Comp.RespawnTimer;
+
+        if (_playerManager.LocalUser is null)
+            return null; // is so bruh
+
+        if (TryGetMindExtension(_playerManager.LocalUser.Value, out _mindExtensionEntity))
+            return _mindExtensionEntity.Value.Comp.RespawnTimer;
+
+        return null;
     }
 }

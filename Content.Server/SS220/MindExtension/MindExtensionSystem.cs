@@ -21,7 +21,7 @@ namespace Content.Server.SS220.MindExtension;
 /// It allows the player to return to a recorded entity.
 /// System also manages the player's return to the lobby.
 /// </summary>
-public sealed partial class MindExtensionSystem : EntitySystem
+public sealed partial class MindExtensionSystem : SharedMindExtensionSystem
 {
     [Dependency] private readonly MindSystem _mind = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
@@ -41,34 +41,6 @@ public sealed partial class MindExtensionSystem : EntitySystem
 
         SubscribeRespawnSystemEvents();
         SubscribeTrailSystemEvents();
-    }
-
-    /// <summary>
-    /// Returns the player associated with entity of <see cref="MindExtensionComponent"/>.
-    /// If it doesn't exist, it will be created.
-    /// </summary>
-    public Entity<MindExtensionComponent> GetMindExtension(NetUserId player)
-    {
-        var mindExts = EntityManager.AllComponents<MindExtensionComponent>();
-        var entity = mindExts.FirstOrNull(x => x.Component.Player == player);
-
-        if (entity is not null)
-            return entity.Value;
-
-        var newEnt = EntityManager.CreateEntityUninitialized(null);
-        var mindExtComponent = new MindExtensionComponent() { Player = player };
-
-        EntityManager.AddComponent(newEnt, mindExtComponent);
-        EntityManager.InitializeEntity(newEnt);
-        return new(newEnt, mindExtComponent);
-    }
-
-    public bool TryGetMindExtension(NetUserId player, [NotNullWhen(true)] out Entity<MindExtensionComponent>? entity)
-    {
-        var mindExts = EntityManager.AllComponents<MindExtensionComponent>();
-        entity = mindExts.FirstOrNull(x => x.Component.Player == player);
-
-        return entity is not null;
     }
 
     public bool TryGetMindExtension(MindExtensionContainerComponent container,

@@ -12,7 +12,7 @@ using Robust.Shared.Player;
 
 namespace Content.Server.SS220.MindExtension;
 
-public partial class MindExtensionSystem : EntitySystem //MindRespawnSystem
+public partial class MindExtensionSystem : SharedMindExtensionSystem //MindRespawnSystem
 {
     private void SubscribeRespawnSystemEvents()
     {
@@ -44,7 +44,7 @@ public partial class MindExtensionSystem : EntitySystem //MindRespawnSystem
         if (!TryGetMindExtension(args.SenderSession.UserId, out var mindExtEnt))
             return;
 
-        UpdateRespawnTimer(mindExtEnt.Value.Comp.RespawnTimer, args.SenderSession);
+        //UpdateRespawnTimer(mindExtEnt.Value.Comp.RespawnTimer, args.SenderSession);
     }
 
     private void SetRespawnTimer(MindExtensionComponent component, EntityUid newEntity, NetUserId playerId)
@@ -77,7 +77,7 @@ public partial class MindExtensionSystem : EntitySystem //MindRespawnSystem
             component.RespawnTimer = null;
 
         component.RespawnAvailable = newRespawnAvaliability;
-        UpdateRespawnTimer(component.RespawnTimer, _playerManager.GetSessionById(playerId));
+        //UpdateRespawnTimer(component.RespawnTimer, _playerManager.GetSessionById(playerId));
     }
 
     private void UpdateRespawnTimer(TimeSpan? timer, ICommonSession session)

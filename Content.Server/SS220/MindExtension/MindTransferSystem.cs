@@ -5,7 +5,7 @@ using Robust.Shared.Network;
 
 namespace Content.Server.SS220.MindExtension;
 
-public partial class MindExtensionSystem : EntitySystem //MindTransferSystem
+public partial class MindExtensionSystem : SharedMindExtensionSystem //MindTransferSystem
 {
     /// <summary>
     /// Moves a MindExtension from one entity to another.
