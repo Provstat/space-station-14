@@ -19,13 +19,14 @@ public abstract class SharedMindExtensionSystem : EntitySystem
             return entity.Value;
 
         var newEnt = EntityManager.CreateEntityUninitialized(null);
-        //var mindExtComponent = new MindExtensionComponent() { Player = player };
 
-        EntityManager.AddComponent<MindExtensionComponent>(newEnt);
+        AddComp<MindExtensionComponent>(newEnt);
         var comp = Comp<MindExtensionComponent>(newEnt);
         comp.Player = player;
-        //EntityManager.AddComponent(newEnt, mindExtComponent);
+
         EntityManager.InitializeEntity(newEnt);
+
+        Dirty(newEnt, comp);
         return new(newEnt, comp);
     }
 

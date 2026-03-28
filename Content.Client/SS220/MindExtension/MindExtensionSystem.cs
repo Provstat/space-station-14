@@ -27,6 +27,17 @@ public sealed class MindExtensionSystem : SharedMindExtensionSystem
         SubscribeNetworkEvent<DeleteTrailPointResponse>(OnDeleteTrailPointResponse);
         SubscribeNetworkEvent<ExtensionReturnResponse>(OnExtensionReturnResponse);
         SubscribeNetworkEvent<RespawnedResponse>(OnRespawnedResponse);
+        SubscribeNetworkEvent<MindExtEntityMessage>(OnMindExtEntityMessage);
+    }
+
+    private void OnMindExtEntityMessage(MindExtEntityMessage ev)
+    {
+        if (!TryGetEntity(ev.MindExtensionEntity, out var entity))
+            return;
+
+        var comp = AddComp<MindExtensionComponent>(entity.Value);
+
+        _mindExtensionEntity = (entity.Value, comp);
     }
 
     private void OnRespawnedResponse(RespawnedResponse ev)
@@ -90,12 +101,7 @@ public sealed class MindExtensionSystem : SharedMindExtensionSystem
         if (_mindExtensionEntity is not null)
             return _mindExtensionEntity.Value.Comp.RespawnTimer;
 
-        if (_playerManager.LocalUser is null)
-            return null; // is so bruh
-
-        if (TryGetMindExtension(_playerManager.LocalUser.Value, out _mindExtensionEntity))
-            return _mindExtensionEntity.Value.Comp.RespawnTimer;
-
+        RaiseNetworkEvent(new MindExtEntityRequest());
         return null;
     }
 }

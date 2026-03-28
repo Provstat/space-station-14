@@ -7,6 +7,7 @@ using Content.Shared.Ghost;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.SS220.MindExtension;
+using Content.Shared.SS220.MindExtension.Events;
 using Robust.Server.Containers;
 using Robust.Server.Player;
 using Robust.Shared.Network;
@@ -39,8 +40,16 @@ public sealed partial class MindExtensionSystem : SharedMindExtensionSystem
 
         _mindExtQuery = GetEntityQuery<MindExtensionComponent>();
 
+        SubscribeNetworkEvent<MindExtEntityRequest>(OnMindExtEntityRequest);
+
         SubscribeRespawnSystemEvents();
         SubscribeTrailSystemEvents();
+    }
+
+    private void OnMindExtEntityRequest(MindExtEntityRequest ev, EntitySessionEventArgs args)
+    {
+        var temp = GetMindExtension(args.SenderSession.UserId);
+        RaiseNetworkEvent(new MindExtEntityMessage(GetNetEntity(temp.Owner)), args.SenderSession);
     }
 
     public bool TryGetMindExtension(MindExtensionContainerComponent container,

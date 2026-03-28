@@ -16,8 +16,7 @@ public partial class MindExtensionSystem : SharedMindExtensionSystem //MindRespa
 {
     private void SubscribeRespawnSystemEvents()
     {
-        SubscribeNetworkEvent<RespawnRequest>(OnRespawnRequest
-            );
+        SubscribeNetworkEvent<RespawnRequest>(OnRespawnRequest);
         SubscribeNetworkEvent<RespawnTimeRequest>(OnRespawnTimeRequest);
     }
 
