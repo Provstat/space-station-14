@@ -1,4 +1,4 @@
-﻿using Robust.Shared.Serialization;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Arcade
 {
@@ -52,20 +52,22 @@ namespace Content.Shared.Arcade
         {
             return inColor switch
             {
-                BlockGameBlockColor.Red => Color.Red,
+                //SS220-block-game-visuals begin
+                BlockGameBlockColor.Red => new(230, 80, 84),
                 BlockGameBlockColor.Orange => Color.Orange,
-                BlockGameBlockColor.Yellow => Color.Yellow,
-                BlockGameBlockColor.Green => Color.Lime,
-                BlockGameBlockColor.Blue => Color.Blue,
-                BlockGameBlockColor.Purple => Color.DarkOrchid,
+                BlockGameBlockColor.Yellow => new(189, 134, 0),
+                BlockGameBlockColor.Green => new(0, 163, 42),
+                BlockGameBlockColor.Blue => new(53, 53, 222),
+                BlockGameBlockColor.Purple => new(76, 40, 130),
                 BlockGameBlockColor.LightBlue => Color.Cyan,
-                BlockGameBlockColor.GhostRed => Color.Red.WithAlpha(0.33f),
+                BlockGameBlockColor.GhostRed => new(230, 80, 84, 85),
                 BlockGameBlockColor.GhostOrange => Color.Orange.WithAlpha(0.33f),
-                BlockGameBlockColor.GhostYellow => Color.Yellow.WithAlpha(0.33f),
-                BlockGameBlockColor.GhostGreen => Color.Lime.WithAlpha(0.33f),
-                BlockGameBlockColor.GhostBlue => Color.Blue.WithAlpha(0.33f),
-                BlockGameBlockColor.GhostPurple => Color.DarkOrchid.WithAlpha(0.33f),
+                BlockGameBlockColor.GhostYellow => new(189, 134, 0, 85),
+                BlockGameBlockColor.GhostGreen => new(0, 163, 42, 85),
+                BlockGameBlockColor.GhostBlue => new(53, 53, 222, 85),
+                BlockGameBlockColor.GhostPurple => new(76, 40, 130),
                 BlockGameBlockColor.GhostLightBlue => Color.Cyan.WithAlpha(0.33f),
+                //SS220-block-game-visuals end
                 _ => Color.Olive //olive is error
             };
         }
